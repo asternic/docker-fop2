@@ -4,12 +4,12 @@ set -e
 echo "FOP2 - AUTOCONFIGURE"
 
 if [ ! -f /etc/php/7.3/mods-available/timezone.ini ]; then
-          echo "date.timezone = $TIMEZONE" > /etc/php/7.3/mods-available/timezone.ini
+                  echo "date.timezone = $TIMEZONE" > /etc/php/7.3/mods-available/timezone.ini
 fi
 
 if [ $MSMTP = "true" ]; then
 
-        cat > /etc/msmtprc <<ENDLINE
+                cat > /etc/msmtprc <<ENDLINE
 defaults
 auth           ${MSMTP_AUTH}
 tls            ${MSMTP_TTS}
@@ -39,7 +39,7 @@ cat > /etc/apache2/sites-available/fop2-htaccess.conf <<ENDLINE
 <Directory "/var/www/html/fop2">
     AuthType Basic
     AuthName "Restricted Content"
-    AuthUserFile /etc/apache2/.htpasswd
+    AuthUserFile /htpasswd/.htpasswd
     Require valid-user
 </Directory>
 ENDLINE
@@ -51,10 +51,10 @@ chmod 0660 /etc/apache2/.htpasswd
 
 else
 
-#false
-rm -fr /etc/apache2/sites-available/fop2-htaccess.conf
-rm -fr /etc/apache2/sites-enabled/fop2-htaccess.conf
-rm -fr /etc/apache2/.htpasswd
+        #false
+        rm -fr /etc/apache2/sites-available/fop2-htaccess.conf
+        rm -fr /etc/apache2/sites-enabled/fop2-htaccess.conf
+        rm -fr /etc/apache2/.htpasswd
 
 fi
 
