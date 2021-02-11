@@ -4,12 +4,12 @@ set -e
 echo "FOP2 - AUTOCONFIGURE"
 
 if [ ! -f /etc/php/7.3/mods-available/timezone.ini ]; then
-	  echo "date.timezone = $TIMEZONE" > /etc/php/7.3/mods-available/timezone.ini
+          echo "date.timezone = $TIMEZONE" > /etc/php/7.3/mods-available/timezone.ini
 fi
 
 if [ $MSMTP = "true" ]; then
 
-	cat > /etc/msmtprc <<ENDLINE
+        cat > /etc/msmtprc <<ENDLINE
 defaults
 auth           ${MSMTP_AUTH}
 tls            ${MSMTP_TTS}
@@ -34,8 +34,8 @@ fi
 
 if [ $HTACCESS = "true" ]; then
 
-	if [ ! -f /var/www/html/fop2/.htaccess ]; then
-		cat > /var/www/html/fop2/.htaccess <<ENDLINE
+        if [ ! -f /var/www/html/fop2/.htaccess ]; then
+                cat > /var/www/html/fop2/.htaccess <<ENDLINE
 AddDefaultCharset UTF-8
 php_value magic_quotes_gpc off
 <Files *>
@@ -50,10 +50,10 @@ AuthUserFile /htpasswd/.htpasswd
 Require valid-user
 ENDLINE
 
-		/usr/bin/htpasswd -bc /htpasswd/.htpasswd ${HTPASSWD_USER} ${HTPASSWD_PASS}
-		chown apache:apache /htpasswd/.htpasswd
-		chmod 0660 /htpasswd/.htpasswd
-	fi
+                /usr/bin/htpasswd -bc /htpasswd/.htpasswd ${HTPASSWD_USER} ${HTPASSWD_PASS}
+                chown apache:apache /htpasswd/.htpasswd
+                chmod 0660 /htpasswd/.htpasswd
+        fi
 
 fi
 
