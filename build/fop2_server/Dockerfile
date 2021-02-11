@@ -1,5 +1,8 @@
 FROM debian:10
 LABEL maintainer="Nicolas Gudiño <ngudino@asternic.net> AND Federico Pereira <fpereira@iperfex.com>"
+LABEL description="Flash Operator Panel 2"
+LABEL url="https://www.fop2.com"
+LABEL github="https://github.com/asternic/docker-fop2"
 
 ENV FOP2_STARTUP_OPTIONS='--licdir=/usr/share/fop2  --dbdir=/var/lib/fop2' \
     FOP2_AMI_HOST=localhost \
@@ -47,11 +50,15 @@ ENV FOP2_STARTUP_OPTIONS='--licdir=/usr/share/fop2  --dbdir=/var/lib/fop2' \
     FOP2_KICK_UNAUTH_CLIENTS=60 \
     FOP2_ATXFER_APPEND_DIGIT=1
 
+ENV TIMEZONE='America/Argentina/Buenos_Aires'
+ENV TZ=$TIMEZONE
+ENV DEBIAN_FRONTEND=noninteractive
+
 ADD http://download.fop2.com/fop2-2.31.30-debian-x86_64.tgz  /usr/src/fop2.tarz
 #ADD https://www.fop2.com/download/debian64 /usr/src/fop2.tarz
 
 RUN apt -y update \
-    && apt -y install make net-tools vim default-mysql-client procps libdbd-sqlite3-perl gettext-base \
+    && apt -y install make net-tools vim default-mysql-client procps libdbd-sqlite3-perl gettext-base tzdata \
     && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
 WORKDIR /usr/src
