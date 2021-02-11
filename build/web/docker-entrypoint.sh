@@ -34,26 +34,27 @@ fi
 
 if [ $HTACCESS = "true" ]; then
 
-        if [ ! -f /var/www/html/fop2/.htaccess ]; then
-                cat > /var/www/html/fop2/.htaccess <<ENDLINE
-AddDefaultCharset UTF-8
-php_value magic_quotes_gpc off
-<Files *>
-Header set Cache-Control: "private, pre-check=0, post-check=0, max-age=0"
-Header set Expires: 0
-Header set Pragma: no-cache
-</Files>
-
-AuthType Basic
-AuthName "Restricted Content"
-AuthUserFile /htpasswd/.htpasswd
-Require valid-user
+#true
+cat > /etc/apache2/sites-available/fop2-htaccess.conf <<ENDLINE
+<Directory "/var/www/html/fop2">
+    AuthType Basic
+    AuthName "Restricted Content"
+    AuthUserFile /htpasswd/.htpasswd
+    Require valid-user
+</Directory>
 ENDLINE
 
-                /usr/bin/htpasswd -bc /htpasswd/.htpasswd ${HTPASSWD_USER} ${HTPASSWD_PASS}
-                chown apache:apache /htpasswd/.htpasswd
-                chmod 0660 /htpasswd/.htpasswd
-        fi
+cp -fra /etc/apache2/sites-available/fop2-htaccess.conf /etc/apache2/sites-enabled/fop2-htaccess.conf
+/usr/bin/htpasswd -bc /etc/apache2/.htpasswd ${HTPASSWD_USER} ${HTPASSWD_PASS}
+chown ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} /etc/apache2/.htpasswd
+chmod 0660 /etc/apache2/.htpasswd
+
+else
+
+#false
+rm -fr /etc/apache2/sites-available/fop2-htaccess.conf
+rm -fr /etc/apache2/sites-enabled/fop2-htaccess.conf
+rm -fr /etc/apache2/.htpasswd
 
 fi
 
