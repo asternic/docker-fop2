@@ -1,8 +1,6 @@
 #!/bin/bash
 set -e
 
-echo "FOP2 - AUTOCONFIGURE"
-
 if [ ! -f /etc/php/7.3/mods-available/timezone.ini ]; then
                   echo "date.timezone = $TIMEZONE" > /etc/php/7.3/mods-available/timezone.ini
 fi
@@ -39,7 +37,7 @@ cat > /etc/apache2/sites-available/fop2-htaccess.conf <<ENDLINE
 <Directory "/var/www/html/fop2">
     AuthType Basic
     AuthName "Restricted Content"
-    AuthUserFile /htpasswd/.htpasswd
+    AuthUserFile /etc/apache2/.htpasswd
     Require valid-user
 </Directory>
 ENDLINE
