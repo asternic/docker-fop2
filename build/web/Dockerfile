@@ -1,5 +1,8 @@
 FROM debian:10
 LABEL maintainer="Nicolas Gudiño <ngudino@asternic.net> AND Federico Pereira <fpereira@iperfex.com>"
+LABEL description="Flash Operator Panel 2"
+LABEL url="https://www.fop2.com"
+LABEL github="https://github.com/asternic/docker-fop2"
 
 ENV APACHE_RUN_USER=www-data \
     APACHE_RUN_GROUP=www-data \
@@ -47,7 +50,11 @@ RUN tar -xzf /usr/src/fop2.tarz \
     && rm -fr /usr/src/fop2 /usr/src/fop2.tarz
 
 RUN a2enmod ssl && a2enmod rewrite && a2dissite 000-default.conf default-ssl.conf \
-    && rm -rf /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/default-ssl.conf
+    && rm -rf /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/default-ssl.conf \
+    && sed -i 's/^ServerSignature/#ServerSignature/g' /etc/apache2/conf-enabled/security.conf \
+    && sed -i 's/^ServerTokens/#ServerTokens/g' /etc/apache2/conf-enabled/security.conf \
+    && echo "ServerSignature Off" >> /etc/apache2/conf-enabled/security.conf \
+    && echo "ServerTokens Prod" >> /etc/apache2/conf-enabled/security.conf
 
 COPY additionals/etc/apache2/sites-available/*.conf /etc/apache2/sites-available/
 COPY additionals/etc/apache2/sites-available/*.conf /etc/apache2/sites-enabled/
