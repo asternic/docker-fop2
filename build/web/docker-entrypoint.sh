@@ -39,7 +39,7 @@ cat > /etc/apache2/sites-available/fop2-htaccess.conf <<ENDLINE
 <Directory "/var/www/html/fop2">
     AuthType Basic
     AuthName "Restricted Content"
-    AuthUserFile /htpasswd/.htpasswd
+    AuthUserFile /etc/apache2/.htpasswd
     Require valid-user
 </Directory>
 ENDLINE
