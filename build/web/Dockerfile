@@ -16,12 +16,13 @@ ENV MYSQL_HOST=localhost \
 
 ENV MSMTP='false'
 ENV HTACCESS='false'
+ENV TIMEZONE='America/Argentina/Buenos_Aires'
 
 #ADD https://www.fop2.com/download/debian64 /usr/src/fop2.tarz
 ADD http://download.fop2.com/fop2-2.31.30-debian-x86_64.tgz  /usr/src/fop2.tarz
 
 RUN apt -y update \
-    && apt -y install procps make net-tools curl vim default-mysql-client unzip msmtp \
+    && apt -y install procps make net-tools curl vim default-mysql-client unzip msmtp tzdata \
     && apt -y install php php-cli php-common php-dev php-pear libmcrypt-dev \
     && apt -y install php-cli php-json php-pdo php-mysql php-zip php-gd php-mbstring php-curl php-xml php-pear php-bcmath \
     && rm -rf /var/lib/{apt,dpkg,cache,log}/
