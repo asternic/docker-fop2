@@ -18,7 +18,7 @@ ENV MSMTP='false'
 ENV HTACCESS='false'
 ENV TIMEZONE='America/Argentina/Buenos_Aires'
 ENV TZ=$TIMEZONE
-ENV DEBIAN_FRONTEND=noninteractive 
+ENV DEBIAN_FRONTEND=noninteractive
 
 #ADD https://www.fop2.com/download/debian64 /usr/src/fop2.tarz
 ADD http://download.fop2.com/fop2-2.31.30-debian-x86_64.tgz  /usr/src/fop2.tarz
