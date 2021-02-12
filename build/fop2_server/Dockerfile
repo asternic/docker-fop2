@@ -50,6 +50,12 @@ ENV FOP2_STARTUP_OPTIONS='--licdir=/usr/share/fop2  --dbdir=/var/lib/fop2' \
     FOP2_KICK_UNAUTH_CLIENTS=60 \
     FOP2_ATXFER_APPEND_DIGIT=1
 
+ENV MYSQL_USER \
+    MYSQL_PASSWORD \
+    MYSQL_DATABASE_FOP2 \
+    MYSQL_HOST \
+    MYSQL_PORT
+
 ENV TIMEZONE='America/Argentina/Buenos_Aires'
 ENV TZ=$TIMEZONE
 ENV DEBIAN_FRONTEND=noninteractive
@@ -57,9 +63,12 @@ ENV DEBIAN_FRONTEND=noninteractive
 ADD http://download.fop2.com/fop2-2.31.30-debian-x86_64.tgz  /usr/src/fop2.tarz
 #ADD https://www.fop2.com/download/debian64 /usr/src/fop2.tarz
 
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+
 RUN apt -y update \
     && apt -y install make net-tools vim default-mysql-client procps libdbd-sqlite3-perl gettext-base tzdata \
-    && rm -rf /var/lib/{apt,dpkg,cache,log}/
+    && rm -rf /var/lib/{apt,dpkg,cache,log}/ \
+    && chmod 777 /usr/local/bin/docker-entrypoint.sh
 
 WORKDIR /usr/src
 
@@ -68,11 +77,13 @@ RUN tar -xzf /usr/src/fop2.tarz \
     && cd /usr/src/fop2 && make install \
     && cp -fra /usr/src/fop2/server/fop2.cfg.docker /usr/local/fop2/fop2.cfg \
     && cp -fra /usr/src/fop2/server/fop2.docker.template.cfg /usr/local/fop2 \
-    && mkdir -p /usr/share/fop2 /var/lib/fop2 \
+    && mkdir -p /usr/share/fop2 /var/lib/fop2 /var/www/html \
     && rm -fr /usr/src/fop2
 
 EXPOSE 4445
 
 WORKDIR /usr/local/fop2
 
-ENTRYPOINT /usr/local/fop2/fop2_server ${FOP2_STARTUP_OPTIONS}
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+
+CMD /usr/local/fop2/fop2_server ${FOP2_STARTUP_OPTIONS}
