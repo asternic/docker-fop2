@@ -47,7 +47,7 @@ RUN tar -xzf /usr/src/fop2.tarz \
     && cp -fra /usr/src/fop2/html/admin/config.docker.php /var/www/html/fop2/admin/config.php \
     && cp -fra /usr/src/fop2/html/admin/functions-custom-dist.php /var/www/html/fop2/admin/functions-custom.php \
     && chmod 777 /usr/local/bin/docker-entrypoint.sh \
-    && rm -fr /usr/src/fop2 /usr/src/fop2.tarz
+    && rm -fr /usr/src/fop2 /usr/src/fop2.tarz /usr/local/fop2/*
 
 RUN a2enmod ssl && a2enmod rewrite && a2dissite 000-default.conf default-ssl.conf \
     && rm -rf /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/default-ssl.conf \
