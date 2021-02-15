@@ -58,4 +58,15 @@ fi
 
 chown ${APACHE_RUN_USER}:${APACHE_RUN_GROUP} -R /var/www/html/fop2
 
+if [ "$FOP2_AMI_HOST" != '' ] && [ "$FOP2_AMI_PORT" != '' ] && [ "$FOP2_AMI_USER" != '' ] && [ "$FOP2_AMI_SECRET" != '' ] ;then
+
+cat > /usr/local/fop2/fop2.cfg <<ENDLINE
+manager_host=${FOP2_AMI_HOST}
+manager_port=${FOP2_AMI_PORT}
+manager_user=${FOP2_AMI_USER}
+manager_secret=${FOP2_AMI_SECRET}
+ENDLINE
+
+fi
+
 exec "$@"
